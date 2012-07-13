@@ -1,0 +1,166 @@
+#!/bin/bash
+#
+# chkconfig: 345 99 20
+# description: Starts steelmesh
+# processname: steelmesh
+# config:      /etc/sysconfig/steelmesh
+# pidfile:     
+### BEGIN INIT INFO
+# Provides: steelmesh
+# Required-Start: $all
+# Required-Stop: $network $syslog
+# Default-Start:
+# Default-Stop:
+# Description: Steelmesh startup script
+# Short-Description: start and stop steelmesh
+### END INIT INFO
+ 
+# steelmesh 	Sidelab's init.d script for starting and stopping steelmesh for RHEL
+
+MESH_CFG="<%= node[:steelmesh][:init_conf] %>"
+
+# Grab Rhel's init functions
+if [ -r "/etc/rc.d/init.d/functions" ]; then
+	. /etc/rc.d/init.d/functions
+fi
+	
+# Grab the nodestack environment variables
+if [ -r "$MESH_CFG" ]; then
+	. $MESH_CFG
+fi
+
+start() {
+	echo -n "Starting steelmesh: "
+	#if [ ! -f $PIDFILE ]; then
+	#	touch $PIDFILE
+	#	echo "Creating pidfile in $PIDFILE"
+	#	chown $TP_USER:$TP_USER $PIDFILE
+	#fi
+	NODE_PID=`pidof node`
+	RETVAL=$?
+	if [ $RETVAL = 0 ]; then
+		warning
+		echo "steelmesh is already running"
+	else
+		if [ ! -f $LOGFILE ]; then
+			touch $LOGFILE
+			echo "Creating logfile in $LOGFILE"
+			chown $MESH_USER:$MESH_USER $LOGFILE
+		fi
+
+		cd $MESH_HOME && daemon --user $MESH_USER "${NODE_BIN}/node ${MESH_HOME}/${MESH_APP} >> ${LOGFILE} 2>&1 < /dev/null &"
+	#cd $TP_HOME && `sudo -u tripplanner ${NODE_BIN}/node ${TP_HOME}/${TP_APP} >> ${LOGFILE} 2>&1 < /dev/null &`
+		RETVAL=$?
+		if [ $RETVAL -eq 0 ]; then
+			touch /var/lock/subsys/steelmesh
+			echo
+			#success
+		fi
+	fi
+	return $RETVAL
+}
+
+stop() {
+	echo "Shutting down steelmesh: "
+	NODE_PID=`pidof node`
+	RETVAL=$?
+	if [ $RETVAL = 0 ]; then
+		killproc -p ${PIDFILE} -TERM
+		RETVAL=$?
+		if [ $RETVAL = 0 ]; then
+			echo "Steelmesh exited successfully"
+			rm -f /var/lock/subsys/steelmesh
+			# Check to see if it was actually killed
+			NODE_PID=`pidof node`
+			RETVAL=$?
+			
+			if [ $RETVAL = 0 ]; then
+				echo "Trying a forcestop"
+				forcestop
+			fi
+		fi
+	else
+		warning
+		echo "Steelmesh is not running"
+	fi
+
+	return $RETVAL
+}
+
+forcestop() {
+## Send the unstoppable kill signal to all nodejs processes
+	killall -9 node
+	RETVAL=$?
+	if [ $RETVAL = 0 ]; then
+		success
+		echo "Forcestop was successful"
+	fi
+	return $RETVAL
+}
+
+status() {
+## Check to see if the master process is running
+	if [ -r ${PIDFILE} ]; then
+		MASTER_PID=`cat ${PIDFILE}`
+		checkpid ${MASTER_PID}
+		RETVAL=$?
+	
+		if [ $RETVAL = 0 ]; then
+			echo "Steelmesh master process is running with pid: ${MASTER_PID}"
+		else
+
+## Check to see if more than one nodejs process is running
+			NODE_PID=`pidof node`
+			RETVAL=$?
+		
+			if [ $RETVAL = 0 ]; then
+				warning
+				echo "Steelmesh is master process is dead"
+				echo "but has worker processes with pids: ${NODE_PID}"
+			else
+				warning
+				echo "Steelmesh is not running"
+			fi
+		fi
+	else
+		NODE_PID=`pidof node`
+		RETVAL=$?	
+			if [ $RETVAL = 0 ]; then
+				warning
+				echo "Steelmesh is running but without a pidfile ${NODE_PID}"
+			else
+				echo "Steelmesh is not running"
+			fi
+	fi
+}
+
+case "$1" in
+    start)
+		start
+	;;
+    stop)
+		stop
+	;;
+	forcestop)
+		forcestop
+	;;
+
+    status)
+	status 
+	;;
+    restart)
+    	stop
+	start
+	;;
+    reload)
+	;;
+    condrestart)
+    ;;
+    probe)
+	;;
+    *)
+	echo "Usage: steelmesh {start|stop|forcestop|status|restart}"
+	exit 1
+	;;
+esac
+exit $?

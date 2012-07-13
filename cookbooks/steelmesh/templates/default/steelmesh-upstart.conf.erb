@@ -1,0 +1,22 @@
+description "Steelmesh"
+author      "Sidelab Pty Ltd"
+
+start on started couchdb and redis-server
+stop on shutdown
+
+chdir <%= node[:steelmesh][:dir] %>
+
+setuid <%= node[:steelmesh][:user] %>
+
+setgid <%= node[:steelmesh][:group] %>
+
+respawn limit 5 10
+
+script
+  exec <%= node[:node][:binary] %> server.js >> <%= node[:steelmesh][:log] %> 2>&1 < /dev/null
+end script
+
+#cd $MESH_HOME && daemon --user $MESH_USER "${NODE_BIN}/node ${MESH_HOME}/${MESH_APP} >> ${LOGFILE} 2>&1 < /dev/null &"
+#script
+#  su -s /bin/sh -c 'HOME=/usr/share/mapbox /usr/bin/node /usr/share/tilemill/index.js --config=/etc/tilemill/tilemill.config >> /var/log/tilemill/tilemill.log 2>&1' mapbox
+#end script
