@@ -1,0 +1,19 @@
+{
+    "run_list": [
+        "recipe[node]", 
+        "recipe[git]", 
+        "recipe[nginx::source]",
+		"recipe[couchdb::source]",
+		"recipe[steelmesh]"
+    ],
+    "node" : {
+		"version" : "0.8.2"
+	},
+	"nginx" : {
+		"version" : "1.2.2"
+	},
+	"couch" : {
+		"src_version" : "latest",
+		"password"	:	"steelmesh"
+	}
+}

@@ -1,0 +1,9 @@
+# Using Chef-Solo to deploy a Steelmesh instance on ubuntu 12.04
+1. Enable passwordless sudo for your chosen user on your server
+    visudo
+    <username here> ALL=NOPASSWD: ALL
+2. Ensure deploy.sh is executable
+    chmod a+X deploy.sh
+3. Execute as follows
+    ./deploy.sh user@server
+4. Use steelmesh
