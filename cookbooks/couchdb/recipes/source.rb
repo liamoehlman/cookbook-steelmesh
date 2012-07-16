@@ -1,9 +1,9 @@
 #
-# Author:: Joshua Timberman <joshua@opscode.com>
+# Author:: Liam Oehlman <liam.oehlman@sidelab.com>
 # Cookbook Name:: couchdb
 # Recipe:: source
 #
-# Copyright 2010, Opscode, Inc
+# Copyright 2012, Sidelab Pty Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -69,6 +69,7 @@ when "latest"
     ssh_wrapper "#{Chef::Config[:file_cache_path]}/wrap-ssh4git.sh"
   end
 
+## Copy over the init scripts created when couchdb installs
   bash "install_couchdb_git" do
     cwd Chef::Config[:file_cache_path]
     code <<-EOH
@@ -95,8 +96,8 @@ else
       tar -zxf #{couchdb_tar_gz}
       cd apache-couchdb-#{node[:couch][:src_version]} && ./configure #{compile_flags} && make && make install
       chown -R #{node[:couch][:user]}:#{node[:couch][:group]} #{node[:couch][:dir]}
-      ln -s #{node[:couch][:init]} /etc/init.d/couchdb
-      ln -s #{node[:couch][:logrotate]} /etc/logrotate.d/couchdb
+      cp -R #{node[:couch][:init]} /etc/init.d/couchdb
+      cp -R #{node[:couch][:logrotate]} /etc/logrotate.d/couchdb
     EOH
     creates "#{node[:couch][:dir]}/bin/couchdb"
     creates "/etc/init.d/couchdb"

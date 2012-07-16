@@ -1,51 +1,59 @@
 DESCRIPTION
 ===========
 
-Installs and configures CouchDB. Optionally can install CouchDB from sources.
+Installs and configures CouchDB from source.
 
 REQUIREMENTS
 ============
 
-Requires a platform that can install Erlang from distribution packages.
-
 ## Platform
 
-Tested on Debian 5+, Ubuntu 8.10+, OpenBSD and FreeBSD.
-
-Also works on Red Hat, CentOS and Fedora, requires the EPEL yum repository.
+Tested on Ubuntu 12.04.
 
 ## Cookbooks
 
 * erlang
+* build-essential
 
 ATTRIBUTES
 ==========
 
-Cookbook attributes are named under the `couch_db` keyspace. The attributes specified in the cookbook are used in the `couchdb::source` recipe only.
+* `node['couch']['version']`     = version to download, either "1.x.x" or "latest" for a git install
+* `node['couch']['mirror']`      = location to download from
 
-* `node['couch_db']['src_checksum']` - sha256sum of the default version of couchdb to download
-* `node['couch_db']['src_version']` - default version of couchdb to download, used in the full URL to download.
-* `node['couch_db']['src_mirror']` - full URL to download.
+* `node['couch']['git']`         = git repository to use
+
+* `node['couch']['dir']`         = Location to install to
+* `node['couch']['user']`        = Couchdb user
+* `node['couch']['group']`       = Couchdb group
+
+* `node['couch']['init']`        = Location of the init.d script when installed from source to copy to the system dir
+* `node['couch']['logrotate']`   = Location of the logrotate.d file when installed from source to copy to the system dir
+
+* `node['couch']['admin']`       = Admin user
+* `node['couch']['password']`    = Admin password
+
+* `node['couch']['listen']`      = Listen ip, defaults to 0.0.0.0 If using in production recommended is 127.0.0.1
 
 RECIPES
 =======
 
-default
+source
 -------
 
-Installs the couchdb package, creates the data directory and starts the couchdb service.
+Installs couchdb from source, either from .tar.gz or from git. Copys over the relevant files from the install to create a system service.
 
-source
-------
+CREDITS
+=======
 
-Downloads the CouchDB source from the Apache project site, plus development dependencies. Then builds the binaries for installation, creates a user and directories, then sets up the couchdb service. Uses the init script provided in the cookbook.
+Originally this cookbook started out as a modification from the original opscode couchdb cookbook. However very little, if any of it remains. It did provide a good template for the construction of this ubuntu specific one and that deserves recgonition.
 
 LICENSE AND AUTHOR
 ==================
 
-Author:: Joshua Timberman (<joshua@opscode.com>)
+Author:: Liam Oehlman (<liam.oehlman@sidelab.com>)
 
-Copyright 2009-2011, Opscode, Inc.
+Copyright 2012, Sidelab Pty Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

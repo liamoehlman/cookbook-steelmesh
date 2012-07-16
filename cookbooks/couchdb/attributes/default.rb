@@ -1,9 +1,9 @@
 #
-# Author:: Joshua Timberman <joshua@opscode.com>
+# Author:: Liam Oehlman <liam.oehlman@sidelab.com>
 # Cookbook Name:: couchdb
-# Attributes:: couchdb
+# Recipe:: source
 #
-# Copyright 2010, Opscode, Inc
+# Copyright 2012, Sidelab Pty Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['couch']['src_version'] = '1.2.0'
-default['couch']['src_mirror']  = "http://mirror.overthewire.com.au/pub/apache/couchdb/releases/#{node[:couch][:src_version]}/apache-couchdb-#{node[:couch][:src_version]}.tar.gz"
+default['couch']['version']     = '1.2.0'
+default['couch']['mirror']      = "http://mirror.overthewire.com.au/pub/apache/couchdb/releases/#{node[:couch][:src_version]}/apache-couchdb-#{node[:couch][:src_version]}.tar.gz"
 
 default['couch']['git']         = 'git://github.com/apache/couchdb.git'
 
