@@ -51,11 +51,11 @@ directory node[:couch][:dir] do
   action :create
 end
 
-case node[:couch][:src_version]
+case node[:couch][:version]
 when "latest"
   include_recipe "git"
 
-  couchdb_tar_gz = File.join(Chef::Config[:file_cache_path], "/", "apache-couchdb-#{node[:couch][:src_version]}")
+  couchdb_tar_gz = File.join(Chef::Config[:file_cache_path], "/", "apache-couchdb-#{node[:couch][:version]}")
   ## Include the wrapper file for git so the run doesn't hang on the yes/no ssh accept
   cookbook_file "#{Chef::Config[:file_cache_path]}/wrap-ssh4git.sh" do
     source "wrap-ssh4git.sh"
@@ -73,7 +73,7 @@ when "latest"
   bash "install_couchdb_git" do
     cwd Chef::Config[:file_cache_path]
     code <<-EOH
-      cd apache-couchdb-#{node[:couch][:src_version]} && ./bootstrap && ./configure #{compile_flags} && make && make install
+      cd apache-couchdb-#{node[:couch][:version]} && ./bootstrap && ./configure #{compile_flags} && make && make install
       chown -R #{node[:couch][:user]}:#{node[:couch][:group]} #{node[:couch][:dir]}
       cp -R #{node[:couch][:init]} /etc/init.d/couchdb
       cp -R #{node[:couch][:logrotate]} /etc/logrotate.d/couchdb
@@ -84,7 +84,7 @@ when "latest"
   end    
 
 else 
-  couchdb_tar_gz = File.join(Chef::Config[:file_cache_path], "/", "apache-couchdb-#{node[:couch][:src_version]}.tar.gz")
+  couchdb_tar_gz = File.join(Chef::Config[:file_cache_path], "/", "apache-couchdb-#{node[:couch][:version]}.tar.gz")
 
   remote_file couchdb_tar_gz do
   source node[:couch][:src_mirror]
@@ -94,7 +94,7 @@ else
     cwd Chef::Config[:file_cache_path]
     code <<-EOH
       tar -zxf #{couchdb_tar_gz}
-      cd apache-couchdb-#{node[:couch][:src_version]} && ./configure #{compile_flags} && make && make install
+      cd apache-couchdb-#{node[:couch][:version]} && ./configure #{compile_flags} && make && make install
       chown -R #{node[:couch][:user]}:#{node[:couch][:group]} #{node[:couch][:dir]}
       cp -R #{node[:couch][:init]} /etc/init.d/couchdb
       cp -R #{node[:couch][:logrotate]} /etc/logrotate.d/couchdb
