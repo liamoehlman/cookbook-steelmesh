@@ -1,7 +1,7 @@
 #
 # Author:: Liam Oehlman <liam.oehlman@sidelab.com>
-# Cookbook Name:: couchdb
-# Recipe:: source
+# Cookbook Name:: node
+# Recipe:: default
 #
 # Copyright 2012, Sidelab Pty Ltd
 #
