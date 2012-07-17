@@ -48,14 +48,19 @@ gem install <whateverwascreated>.gem
 ```
 
 ## Using VeeWee and Vagrant
-Define your template. This will use the ubuntu-12.04-server-amd64 template to define tge vagrant template "precise64". You can change that to whatever you like. During the build step veewee will go out and fetch all the bits needed such as the .iso file 
-    veewee vbox define 'precise64' 'ubuntu-12.04-server-amd64'
-    veewee vbox build 'precise64'
-Now VeeWee has done its thing and created a "basebox" ideally you would like to make that portable, so we use Vagrant to package it up like so:
-      vagrant basebox export
+Define your template. This will use the ubuntu-12.04-server-amd64 template to define tge vagrant template "precise64". You can change that to whatever you like. During the build step veewee will go out and fetch all the bits needed such as the .iso file.   
+```bash
+veewee vbox define 'precise64' 'ubuntu-12.04-server-amd64'
+veewee vbox build 'precise64'
+```
+Now VeeWee has done its thing and created a "basebox" ideally you would like to make that portable, so we use Vagrant to package it up like so:  
+```bash
+vagrant basebox export
+````
 Once that is done import it into Vagrant. This will allow us to use this "basebox" on any Vagrant controlled vm we want.
-    vagrant box add "pecise64" package.box
-
+```bash
+vagrant box add "pecise64" package.box
+```
 -------------------------------
 # Controlling the virtual machine
 
