@@ -22,12 +22,15 @@ Also worth a note is Vagrant is installed as a dependancy of VeeWee.
 
 1. Make sure you have ruby 1.9.2 installed.  
 2. Install bundler  
-    gem install bundler
+```bash
+gem install bundler```
 3. Clone the repo  
-    git clone git://github.com/jedi4ever/veewee.git
+```bash
+git clone git://github.com/jedi4ever/veewee.git```
 4. Install VeeWee  
-    cd veewee
-    bundle install
+```bash
+cd veewee
+bundle install```
 
 Now, you may at this point have to build the gem to get this to work (I did) so do the following
     gem build veewee.gemspec
@@ -46,13 +49,16 @@ Once that is done import it into Vagrant. This will allow us to use this "basebo
 # Controlling the virtual machine
 
 Now using the included vagrant file, we can bring the steelmesh virtual machine online by one simple command.
-    vagrant up
+```bash vagrant up
 To shut it down use
-    vagrant halt
+```bash
+vagrant halt```
 and to destory it
-    vagrant destory
+```bash
+vagrant destory```
 ssh into it
-    vagrant ssh
+```bash
+vagrant ssh```
 There are some other things you can do with vagrant but that should be enough for starters
 
 Don't worry about destorying the box if you have seriously broken something on it, calling vagrant up will do a clean build of the box from the included chef cookbooks.
