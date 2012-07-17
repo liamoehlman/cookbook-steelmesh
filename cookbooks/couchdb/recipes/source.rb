@@ -87,7 +87,7 @@ else
   couchdb_tar_gz = File.join(Chef::Config[:file_cache_path], "/", "apache-couchdb-#{node[:couch][:version]}.tar.gz")
 
   remote_file couchdb_tar_gz do
-  source node[:couch][:src_mirror]
+  source node[:couch][:mirror]
   end
 
   bash "install couchdb" do
