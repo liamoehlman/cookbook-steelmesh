@@ -1,18 +1,18 @@
 # Using Chef-Solo to deploy a Steelmesh instance on ubuntu 12.04
-1. Enable passwordless sudo for your chosen user on your server
+Enable passwordless sudo for your chosen user on your server  
 ```bash
 visudo
 <username here> ALL=NOPASSWD: ALL
 ```
-2. Ensure deploy.sh is executable
+Ensure deploy.sh is executable  
 ```bash
 chmod a+X deploy.sh
 ```
-3. Execute as follows
+Execute as follows  
 ```bash
 ./deploy.sh user@server
 ```
-4. Use steelmesh
+Use steelmesh
 
 # Local steelmesh development via Virtual machines
 To test on local virtual machines we will use a few tools to make this process as painless as possible once setup. They are:
@@ -26,16 +26,16 @@ A short summary of the above tools for the unintiated. VirtualBox is an open sou
 You can view the official installation documentation at [github](https://github.com/jedi4ever/veewee/blob/master/doc/installation.md).
 Also worth a note is Vagrant is installed as a dependancy of VeeWee.
 
-- Make sure you have ruby 1.9.2 installed.   
-- Install bundler    
+Make sure you have ruby 1.9.2 installed.   
+Install bundler    
 ```bash
 gem install bundler
 ```
-- Clone the repo  
+Clone the repo  
 ```bash
 git clone git://github.com/jedi4ever/veewee.git
 ```
-- Install VeeWee  
+Install VeeWee  
 ```bash
 cd veewee
 bundle install
