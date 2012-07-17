@@ -17,40 +17,42 @@ To test on local virtual machines we will use a few tools to make this process a
 A short summary of the above tools for the unintiated. VirtualBox is an open source virtualization platform from Oracle, of which VeeWee and Vagrant are wholely dependant on. VeeWee is a tool facilitating the easy setup of a virtual machine for Vagrant to use in its magic and Vagrant allows for the rapid setup and destruction of a virtual machine. 
 
 ## Installing VeeWee
-You can view the official installation documentation at [github](https://github.com/jedi4ever/veewee/blob/master/doc/installation.md). 
-Also worth a note is Vagrant is installed as a dependancy of VeeWee
-1. Make sure you have ruby 1.9.2 installed.
-2. Install bundler
-      gem install bundler
-3. Clone the repo
-      git clone git://github.com/jedi4ever/veewee.git
-4. Install VeeWee
-      cd veewee
-      bundle install
+You can view the official installation documentation at [github](https://github.com/jedi4ever/veewee/blob/master/doc/installation.md).
+Also worth a note is Vagrant is installed as a dependancy of VeeWee.
+
+1. Make sure you have ruby 1.9.2 installed.  
+2. Install bundler  
+    gem install bundler
+3. Clone the repo  
+    git clone git://github.com/jedi4ever/veewee.git
+4. Install VeeWee  
+    cd veewee
+    bundle install
 
 Now, you may at this point have to build the gem to get this to work (I did) so do the following
-      gem build veewee.gemspec
-      gem install <whateverwascreated>.gem
+    gem build veewee.gemspec
+    gem install <whateverwascreated>.gem
 
 ## Using VeeWee and Vagrant
 Define your template. This will use the ubuntu-12.04-server-amd64 template to define tge vagrant template "precise64". You can change that to whatever you like. During the build step veewee will go out and fetch all the bits needed such as the .iso file 
-      veewee vbox define 'precise64' 'ubuntu-12.04-server-amd64'
-      veewee vbox build 'precise64'
+    veewee vbox define 'precise64' 'ubuntu-12.04-server-amd64'
+    veewee vbox build 'precise64'
 Now VeeWee has done its thing and created a "basebox" ideally you would like to make that portable, so we use Vagrant to package it up like so:
       vagrant basebox export
 Once that is done import it into Vagrant. This will allow us to use this "basebox" on any Vagrant controlled vm we want.
-      vagrant box add "pecise64" package.box
+    vagrant box add "pecise64" package.box
+
 -------------------------------
 # Controlling the virtual machine
 
 Now using the included vagrant file, we can bring the steelmesh virtual machine online by one simple command.
-      vagrant up
+    vagrant up
 To shut it down use
-      vagrant halt
+    vagrant halt
 and to destory it
-      vagrant destory
+    vagrant destory
 ssh into it
-      vagrant ssh
+    vagrant ssh
 There are some other things you can do with vagrant but that should be enough for starters
 
 Don't worry about destorying the box if you have seriously broken something on it, calling vagrant up will do a clean build of the box from the included chef cookbooks.
@@ -59,10 +61,10 @@ Don't worry about destorying the box if you have seriously broken something on i
 # Steelmesh and Vagrant info
 The following is the port forwarding information for the machine, on the left is what it will appear to you on your machine and the right what it is actually on the vm
 
-8080 -> 80
-5985 -> 5984 (couchdb)
-3275 -> 3274 (steelmesh dashboard)
-6634 -> 6633 (steelmesh port)
+8080 -> 80  
+5985 -> 5984 (couchdb)  
+3275 -> 3274 (steelmesh dashboard)  
+6634 -> 6633 (steelmesh port)  
 
 Because of the way the networking is done using vagrant navigating to say http://localhost:8080 on your machine will actually be port 80 on the vm and so forth...
 
