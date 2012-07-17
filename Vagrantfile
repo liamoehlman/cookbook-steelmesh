@@ -85,7 +85,7 @@ Vagrant::Config.run do |config|
 			:version => "1.2.2"
 		},
 		:couch => {
-			:src_version => "latest",
+			:version => "latest",
 			:password => "steelmesh"
 		}		 
 	}
