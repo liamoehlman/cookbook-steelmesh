@@ -23,18 +23,23 @@ Also worth a note is Vagrant is installed as a dependancy of VeeWee.
 1. Make sure you have ruby 1.9.2 installed.  
 2. Install bundler  
 ```bash
-gem install bundler```
+gem install bundler
+```
 3. Clone the repo  
 ```bash
-git clone git://github.com/jedi4ever/veewee.git```
+git clone git://github.com/jedi4ever/veewee.git
+```
 4. Install VeeWee  
 ```bash
 cd veewee
-bundle install```
+bundle install
+```
 
 Now, you may at this point have to build the gem to get this to work (I did) so do the following
-    gem build veewee.gemspec
-    gem install <whateverwascreated>.gem
+```bash
+gem build veewee.gemspec
+gem install <whateverwascreated>.gem
+```
 
 ## Using VeeWee and Vagrant
 Define your template. This will use the ubuntu-12.04-server-amd64 template to define tge vagrant template "precise64". You can change that to whatever you like. During the build step veewee will go out and fetch all the bits needed such as the .iso file 
@@ -48,17 +53,23 @@ Once that is done import it into Vagrant. This will allow us to use this "basebo
 -------------------------------
 # Controlling the virtual machine
 
-Now using the included vagrant file, we can bring the steelmesh virtual machine online by one simple command.
-```bash vagrant up
+Now using the included vagrant file, we can bring the steelmesh virtual machine online by one simple command.  
+
+```bash
+vagrant up
+```
 To shut it down use
 ```bash
-vagrant halt```
+vagrant halt
+```
 and to destory it
 ```bash
-vagrant destory```
+vagrant destory
+```
 ssh into it
 ```bash
-vagrant ssh```
+vagrant ssh
+```
 There are some other things you can do with vagrant but that should be enough for starters
 
 Don't worry about destorying the box if you have seriously broken something on it, calling vagrant up will do a clean build of the box from the included chef cookbooks.
